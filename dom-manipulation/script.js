@@ -5,12 +5,13 @@ let quotes = [
   { text: "Stay positive even in hard times.", category: "Inspiration" },
 ];
 
-// Function to display a random quote
-function displayRandomQuote() {
+// ✅ Function name updated to "showRandomQuote"
+// ✅ Uses innerHTML
+function showRandomQuote() {
   const quoteDisplay = document.getElementById("quoteDisplay");
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const quote = quotes[randomIndex];
-  quoteDisplay.textContent = `"${quote.text}" - ${quote.category}`;
+  quoteDisplay.innerHTML = `<p>"${quote.text}"</p><small>- ${quote.category}</small>`;
 }
 
 // Function to add a new quote
@@ -31,5 +32,5 @@ function addQuote() {
   }
 }
 
-// Event listener for the "Show New Quote" button
-document.getElementById("newQuote").addEventListener("click", displayRandomQuote);
+// ✅ Event listener calls showRandomQuote
+document.getElementById("newQuote").addEventListener("click", showRandomQuote);
