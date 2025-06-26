@@ -1,4 +1,4 @@
-// script.js (Extended with Server Sync and Conflict Resolution)
+// script.js (Extended with Server Sync and Conflict Resolution + Async/Await)
 
 let quotes = JSON.parse(localStorage.getItem("quotes")) || [
   { text: "Believe in yourself.", category: "Motivation" },
@@ -137,23 +137,24 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
-// ✅ Simulate fetching quotes from server
-function fetchQuotesFromServer() {
-  fetch(serverEndpoint)
-    .then(response => response.json())
-    .then(data => {
-      const serverQuotes = data.slice(0, 3).map(post => ({
-        text: post.title,
-        category: "Server"
-      }));
-      quotes = mergeQuotes(serverQuotes, quotes);
-      saveQuotes();
-      populateCategories();
-      alert("Quotes synced from server and merged.");
-    });
+// ✅ Async version of fetch with await
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch(serverEndpoint);
+    const data = await response.json();
+    const serverQuotes = data.slice(0, 3).map(post => ({
+      text: post.title,
+      category: "Server"
+    }));
+    quotes = mergeQuotes(serverQuotes, quotes);
+    saveQuotes();
+    populateCategories();
+    alert("Quotes synced from server and merged.");
+  } catch (error) {
+    console.error("Failed to sync with server:", error);
+  }
 }
 
-// ✅ Merge quotes with conflict resolution
 function mergeQuotes(serverQuotes, localQuotes) {
   const allTexts = new Set(localQuotes.map(q => q.text));
   const merged = [...localQuotes];
@@ -165,17 +166,14 @@ function mergeQuotes(serverQuotes, localQuotes) {
   return merged;
 }
 
-// ✅ Sync button action
 function syncWithServer() {
   fetchQuotesFromServer();
 }
 
-// ✅ Init
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("newQuote").addEventListener("click", showRandomQuote);
   createAddQuoteForm();
   populateCategories();
   showRandomQuote();
-  setInterval(fetchQuotesFromServer, 60000); // Auto-sync every 60 seconds
+  setInterval(fetchQuotesFromServer, 60000);
 });
-
