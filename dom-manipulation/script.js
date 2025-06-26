@@ -138,7 +138,7 @@ function importFromJsonFile(event) {
 }
 
 // ✅ Simulate fetching quotes from server
-function fetchFromServer() {
+function fetchQuotesFromServer() {
   fetch(serverEndpoint)
     .then(response => response.json())
     .then(data => {
@@ -167,7 +167,7 @@ function mergeQuotes(serverQuotes, localQuotes) {
 
 // ✅ Sync button action
 function syncWithServer() {
-  fetchFromServer();
+  fetchQuotesFromServer();
 }
 
 // ✅ Init
@@ -176,5 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
   createAddQuoteForm();
   populateCategories();
   showRandomQuote();
-  setInterval(fetchFromServer, 60000); // Auto-sync every 60 seconds
+  setInterval(fetchQuotesFromServer, 60000); // Auto-sync every 60 seconds
 });
+
