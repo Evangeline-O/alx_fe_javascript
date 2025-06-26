@@ -1,4 +1,4 @@
-// script.js (Extended with Server Sync and Conflict Resolution + Async/Await)
+// script.js (Extended with Server Sync and Conflict Resolution + Async/Await + POST Support)
 
 let quotes = JSON.parse(localStorage.getItem("quotes")) || [
   { text: "Believe in yourself.", category: "Motivation" },
@@ -38,12 +38,14 @@ function addQuote() {
   const newCategory = categoryInput.value.trim();
 
   if (newText && newCategory) {
-    quotes.push({ text: newText, category: newCategory });
+    const newQuote = { text: newText, category: newCategory };
+    quotes.push(newQuote);
     saveQuotes();
     populateCategories();
     alert("Quote added!");
     textInput.value = "";
     categoryInput.value = "";
+    postQuoteToServer(newQuote);
   } else {
     alert("Please fill in both fields.");
   }
@@ -137,7 +139,6 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
-// ✅ Async version of fetch with await
 async function fetchQuotesFromServer() {
   try {
     const response = await fetch(serverEndpoint);
@@ -152,6 +153,22 @@ async function fetchQuotesFromServer() {
     alert("Quotes synced from server and merged.");
   } catch (error) {
     console.error("Failed to sync with server:", error);
+  }
+}
+
+async function postQuoteToServer(quote) {
+  try {
+    const response = await fetch(serverEndpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(quote)
+    });
+    const result = await response.json();
+    console.log("Quote posted to server:", result);
+  } catch (error) {
+    console.error("Error posting quote to server:", error);
   }
 }
 
