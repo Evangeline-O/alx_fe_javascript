@@ -1,39 +1,39 @@
-// Step 1: Define the quotes array
-const quotes = [
+// Initial quote array
+let quotes = [
   { text: "Believe in yourself.", category: "Motivation" },
-  { text: "Stay curious and keep learning.", category: "Education" },
-  { text: "Your mental health matters.", category: "Well-being" },
-  { text: "Code like a girl and lead like a boss!", category: "Tech" }
+  { text: "Stay positive and strong.", category: "Mental Health" },
+  { text: "Every day is a second chance.", category: "Inspiration" },
 ];
 
-// Step 2: Create displayRandomQuote function
+// Display a random quote
 function displayRandomQuote() {
+  const quoteDisplay = document.getElementById("quoteDisplay");
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const quote = quotes[randomIndex];
 
-  const quoteDisplay = document.getElementById('quoteDisplay');
-  quoteDisplay.innerHTML = `<p>"${quote.text}"</p><small>- ${quote.category}</small>`;
+  quoteDisplay.textContent = `"${quote.text}" - ${quote.category}`;
 }
 
-// Step 3: Create addQuote function
+// Add a new quote to the array and update the DOM
 function addQuote() {
-  const newText = document.getElementById('newQuoteText').value.trim();
-  const newCategory = document.getElementById('newQuoteCategory').value.trim();
+  const textInput = document.getElementById("newQuoteText");
+  const categoryInput = document.getElementById("newQuoteCategory");
 
-  if (newText === "" || newCategory === "") {
-    alert("Please fill in both fields.");
-    return;
+  const newText = textInput.value.trim();
+  const newCategory = categoryInput.value.trim();
+
+  if (newText && newCategory) {
+    quotes.push({ text: newText, category: newCategory });
+    textInput.value = "";
+    categoryInput.value = "";
+    alert("Quote added successfully!");
+  } else {
+    alert("Please enter both quote and category.");
   }
-
-  quotes.push({ text: newText, category: newCategory });
-
-  alert("New quote added successfully!");
-  document.getElementById('newQuoteText').value = "";
-  document.getElementById('newQuoteCategory').value = "";
 }
 
-// Step 4: Add event listener to button
-document.getElementById('newQuote').addEventListener('click', displayRandomQuote);
+// Event listener for "Show New Quote" button
+document.getElementById("newQuote").addEventListener("click", displayRandomQuote);
 
-// Optional: Show a random quote on load
-window.addEventListener('DOMContentLoaded', displayRandomQuote);
+// Initial quote display
+displayRandomQuote();
