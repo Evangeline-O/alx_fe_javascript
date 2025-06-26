@@ -109,7 +109,20 @@ function createAddQuoteForm() {
   syncButton.textContent = "Sync with Server";
   syncButton.onclick = syncWithServer;
 
-  formContainer.append(textInput, categoryInput, addButton, exportButton, importInput, categoryFilter, syncButton);
+  const manualSyncButton = document.createElement("button");
+  manualSyncButton.textContent = "Manual Sync (syncQuotes)";
+  manualSyncButton.onclick = syncQuotes;
+
+  formContainer.append(
+    textInput,
+    categoryInput,
+    addButton,
+    exportButton,
+    importInput,
+    categoryFilter,
+    syncButton,
+    manualSyncButton
+  );
   document.body.appendChild(formContainer);
 }
 
@@ -185,6 +198,11 @@ function mergeQuotes(serverQuotes, localQuotes) {
 
 function syncWithServer() {
   fetchQuotesFromServer();
+}
+
+function syncQuotes() {
+  console.log("syncQuotes triggered");
+  syncWithServer();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
