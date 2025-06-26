@@ -163,7 +163,7 @@ async function fetchQuotesFromServer() {
     quotes = mergeQuotes(serverQuotes, quotes);
     saveQuotes();
     populateCategories();
-    alert("Quotes synced from server and merged.");
+    alert("Quotes synced with server!");
   } catch (error) {
     console.error("Failed to sync with server:", error);
   }
